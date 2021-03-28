@@ -1,6 +1,7 @@
 require('nvim-treesitter')
 local utils = require("nvim-biscuits.utils")
 local config = require("nvim-biscuits.config")
+local languages = require("nvim-biscuits.languages")
 
 local final_config = config.default_config()
 
@@ -55,25 +56,37 @@ local decorateNodes = function (bufnr, lang)
         should_decorate = false
       end
 
+      if languages.should_decorate(lang, node, text) == false then
+        should_decorate = false
+      end
+
       if should_decorate then
 
         local max_length = config.get_language_config(final_config, lang, "max_length")
 
         if string.len(text) >= max_length then
           text = string.sub(text, 1, max_length)
+          text = text..'...'
         end
 
         text = text:gsub('"', '\\"')
+
+        text = text:gsub("\n", ' ')
 
         local prefix_string = config.get_language_config(final_config, lang, "prefix_string")
 
         text = prefix_string..text
 
-        local nvim_clear_script = "nvim_buf_clear_namespace("..bufnr..", 0, "..end_line..", "..(end_line + 1)..")"
-        vim.api.nvim_eval(nvim_clear_script)
+        -- language specific text filter
+        text = languages.transform_text(lang, node, text)
 
-        local nvim_script = "nvim_buf_set_virtual_text("..bufnr..", 0, "..end_line..", [[\""..text.."\"]], [])"
-        vim.api.nvim_eval(nvim_script)
+        if utils.trim(text) ~= '' then
+          local nvim_clear_script = "nvim_buf_clear_namespace("..bufnr..", 0, "..end_line..", "..(end_line + 1)..")"
+          vim.api.nvim_eval(nvim_clear_script)
+
+          local nvim_script = "nvim_buf_set_virtual_text("..bufnr..", 0, "..end_line..", [[\""..text.."\"]], [])"
+          vim.api.nvim_eval(nvim_script)
+        end
       else
         utils.console_log('empty')
       end

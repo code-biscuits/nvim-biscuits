@@ -5,7 +5,6 @@ local utils = {}
 local debug = false
 local debug_path = '~/vim-biscuits.log'
 
-
 utils.console_log = function (the_string)
   if debug then
     Path:new(debug_path):write(the_string..'\n', 'a')
