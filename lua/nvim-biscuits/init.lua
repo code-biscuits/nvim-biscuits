@@ -91,11 +91,14 @@ local decorateNodes = function (bufnr, lang)
           local nvim_clear_script = "nvim_buf_clear_namespace("..bufnr..", 0, "..end_line..", "..(end_line + 1)..")"
           vim.api.nvim_eval(nvim_clear_script)
 
-          local nvim_script = "nvim_buf_set_virtual_text("..bufnr..", 0, "..end_line..", [[\""..text.."\"]], [])"
+          local biscuit_highlight_group = "BiscuitColor"..lang
+          vim.cmd("highlight default link "..biscuit_highlight_group.." BiscuitColor")
+
+          local nvim_script = "nvim_buf_set_virtual_text("..bufnr..", 0, "..end_line..", [[\""..text.."\", \""..biscuit_highlight_group.."\"]], [])"
           vim.api.nvim_eval(nvim_script)
         end
       else
-        utils.console_log('empty')
+        -- utils.console_log('empty')
       end
 
     end

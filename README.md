@@ -58,6 +58,20 @@ require('nvim-biscuits').setup({
 EOF
 ```
 
+## Configuration (Virtual Text Color)
+
+You can configure the `highlight` group in your init.vim:
+
+```lua
+
+" global color
+highlight BiscuitColor ctermfg=cyan
+
+" language specific color
+highlight BiscuitColorRust ctermfg=red
+
+```
+
 ## Supported Languages
 
 We currently support all the languages supported in tree-sitter. Not all languages have specialized support, though most will probably need some.
