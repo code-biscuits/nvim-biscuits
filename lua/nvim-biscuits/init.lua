@@ -34,7 +34,15 @@ local decorateNodes = function (bufnr, lang)
       children = utils.merge_arrays(children, ts_utils.get_named_children(node))
 
       local start_line, start_col, end_line, end_col = ts_utils.get_node_range(node)
-      local text = ts_utils.get_node_text(node)[1]
+      -- local text = ts_utils.get_node_text(node)[1]
+
+      local lines = vim.api.nvim_buf_get_lines(bufnr, start_line, start_line+1, false)
+
+      local text = lines[1]
+
+      if text == nil then
+        text = ''
+      end
 
       text = utils.trim(text)
 
@@ -75,12 +83,11 @@ local decorateNodes = function (bufnr, lang)
 
         local prefix_string = config.get_language_config(final_config, lang, "prefix_string")
 
-        text = prefix_string..text
-
         -- language specific text filter
         text = languages.transform_text(lang, node, text)
 
         if utils.trim(text) ~= '' then
+          text = prefix_string..text
           local nvim_clear_script = "nvim_buf_clear_namespace("..bufnr..", 0, "..end_line..", "..(end_line + 1)..")"
           vim.api.nvim_eval(nvim_clear_script)
 

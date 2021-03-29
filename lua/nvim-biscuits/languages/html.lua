@@ -41,7 +41,10 @@ language.transform_text = function (ts_node, text)
   end_string = string.gsub(end_string, '/', '')
   end_string = string.gsub(end_string, '>', '')
 
-  text = string.gsub(text, end_string, '')
+  pcall(function ()
+    text = string.gsub(text, end_string, '')
+  end)
+
   text = string.gsub(text, '>', '')
   text = string.gsub(text, '  ', ' ')
 
