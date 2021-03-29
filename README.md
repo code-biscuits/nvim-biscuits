@@ -8,7 +8,6 @@ In your nvim config, add the Plug dependencies:
 
 ```lua
 call plug#begin()
-Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'code-biscuits/nvim-biscuits'
 call plug#end()
@@ -77,6 +76,26 @@ highlight BiscuitColorRust ctermfg=red
 We currently support all the languages supported in tree-sitter. Not all languages have specialized support, though most will probably need some.
 
 As we make tailored handlers for specific languages we will create a table here to track that.
+
+## Development
+
+While doing local dev, it can be nice to use the `utils.console_log` command to write runtime logs to `~/vim-biscuits.log`.
+
+In `lua/utils.lua`:
+
+```lua
+-- uncomment line below for dev logging
+-- local dev = require("nvim-biscuits.dev")
+
+utils.console_log = function (the_string)
+  -- uncomment line below for dev logging
+  -- dev.console_log(the_string)
+end
+```
+
+You can also change the log path in `dev.lua`.
+
+Make sure not to commit these changes.
 
 ## License
 

@@ -1,14 +1,12 @@
-local Path = require("plenary.path")
 
 local utils = {}
 
-local debug = false
-local debug_path = '~/vim-biscuits.log'
+-- uncomment line below for dev logging
+-- local dev = require("nvim-biscuits.dev")
 
 utils.console_log = function (the_string)
-  if debug then
-    Path:new(debug_path):write(the_string..'\n', 'a')
-  end
+  -- uncomment line below for dev logging
+  -- dev.console_log(the_string)
 end
 
 utils.merge_arrays = function(a, b)
