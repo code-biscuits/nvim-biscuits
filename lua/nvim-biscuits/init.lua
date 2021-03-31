@@ -14,8 +14,7 @@ local ts_parsers = require('nvim-treesitter.parsers')
 local ts_utils = require('nvim-treesitter.ts_utils')
 local nvim_biscuits = {}
 
-local decorateNodes = function (bufnr, lang)
-
+local decorateNodes = function(bufnr, lang)
   local parser = ts_parsers.get_parser(bufnr, lang)
 
   if parser == nil then
@@ -122,16 +121,27 @@ nvim_biscuits.setup = function (user_config)
   utils.clear_log()
 end
 
-nvim_biscuits.BufferAttach = function()
-  local bufnr = vim.fn.bufnr()
-  local lang = ts_parsers.get_buf_lang(bufnr)
-  decorateNodes(bufnr, lang)
+local attached_buffers = {}
+nvim_biscuits.BufferAttach = function(bufnr)
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+  if attached_buffers[bufnr] then
+    return
+  end
 
-  -- edit event
+  attached_buffers[bufnr] = true
+
+  local lang = ts_parsers.get_buf_lang(bufnr)
+  local on_lines = function()
+    decorateNodes(bufnr, lang)
+  end
+
+  on_lines()
   vim.api.nvim_buf_attach(bufnr, false, {
-    on_lines=function(lines_string, edited_bufnr)
-      decorateNodes(edited_bufnr, lang)
-    end
+    on_lines = on_lines,
+
+    on_detach = function()
+      attached_buffers[bufnr] = nil
+    end,
   })
 end
 
