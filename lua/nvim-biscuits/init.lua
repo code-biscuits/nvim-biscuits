@@ -118,18 +118,28 @@ nvim_biscuits.setup = function (user_config)
   utils.clear_log()
 end
 
-nvim_biscuits.BufferAttach = function()
-  local bufnr = vim.fn.bufnr()
+local attached_buffers = {}
+nvim_biscuits.BufferAttach = function(bufnr)
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+  if attached_buffers[bufnr] then
+    return
+  end
+
+  attached_buffers[bufnr] = true
+
   local lang = ts_parsers.get_buf_lang(bufnr)
-  decorateNodes(bufnr, lang)
+  local on_lines = function()
+    decorateNodes(bufnr, lang)
+  end
 
   vim.cmd("highlight default link " .. make_biscuit_hl_group(lang) .. " BiscuitColor")
 
-  -- edit event
   vim.api.nvim_buf_attach(bufnr, false, {
-    on_lines=function(lines_string, edited_bufnr)
-      decorateNodes(edited_bufnr, lang)
-    end
+    on_lines = on_lines,
+
+    on_detach = function()
+      attached_buffers[bufnr] = nil
+    end,
   })
 end
 
