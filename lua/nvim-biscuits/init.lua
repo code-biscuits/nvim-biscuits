@@ -14,6 +14,10 @@ local ts_parsers = require('nvim-treesitter.parsers')
 local ts_utils = require('nvim-treesitter.ts_utils')
 local nvim_biscuits = {}
 
+local make_biscuit_hl_group = function(lang)
+  return 'BiscuitColor' .. lang
+end
+
 local decorateNodes = function (bufnr, lang)
 
   local parser = ts_parsers.get_parser(bufnr, lang)
@@ -23,6 +27,7 @@ local decorateNodes = function (bufnr, lang)
     return
   end
 
+  local biscuit_highlight_group = make_biscuit_hl_group(lang)
   local root = parser:parse()[1]:root()
 
   local nodes = ts_utils.get_named_children(root)
@@ -69,15 +74,12 @@ local decorateNodes = function (bufnr, lang)
       end
 
       if should_decorate then
-
         local max_length = config.get_language_config(final_config, lang, "max_length")
 
         if string.len(text) >= max_length then
           text = string.sub(text, 1, max_length)
           text = text..'...'
         end
-
-        text = text:gsub('"', '\\"')
 
         text = text:gsub("\n", ' ')
 
@@ -88,19 +90,13 @@ local decorateNodes = function (bufnr, lang)
 
         if utils.trim(text) ~= '' then
           text = prefix_string..text
-          local nvim_clear_script = "nvim_buf_clear_namespace("..bufnr..", 0, "..end_line..", "..(end_line + 1)..")"
-          vim.api.nvim_eval(nvim_clear_script)
 
-          local biscuit_highlight_group = "BiscuitColor"..lang
-          vim.cmd("highlight default link "..biscuit_highlight_group.." BiscuitColor")
-
-          local nvim_script = "nvim_buf_set_virtual_text("..bufnr..", 0, "..end_line..", [[\""..text.."\", \""..biscuit_highlight_group.."\"]], [])"
-          vim.api.nvim_eval(nvim_script)
+          vim.api.nvim_buf_clear_namespace(bufnr, 0, end_line, end_line + 1)
+          vim.api.nvim_buf_set_virtual_text(bufnr, 0, end_line, { {text, biscuit_highlight_group} }, {})
         end
       else
         -- utils.console_log('empty')
       end
-
     end
 
     nodes = children
@@ -126,6 +122,8 @@ nvim_biscuits.BufferAttach = function()
   local bufnr = vim.fn.bufnr()
   local lang = ts_parsers.get_buf_lang(bufnr)
   decorateNodes(bufnr, lang)
+
+  vim.cmd("highlight default link " .. make_biscuit_hl_group(lang) .. " BiscuitColor")
 
   -- edit event
   vim.api.nvim_buf_attach(bufnr, false, {
