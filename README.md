@@ -57,6 +57,20 @@ require('nvim-biscuits').setup({
 EOF
 ```
 
+## Configuration (Custom events)
+
+If you want to decorate only on specific vim events you can use the `on_events` cofnig option. It is a string that takes in a comma separated list of vim autocmd events ([http://vimdoc.sourceforge.net/htmldoc/autocmd.html#autocmd-events](http://vimdoc.sourceforge.net/htmldoc/autocmd.html#autocmd-events))
+
+This example only updates the biscuits when leaving insert mode or hold the cursor in one place for long enough.
+
+```lua
+lua <<EOF
+require('nvim-biscuits').setup({
+  on_events = 'InsertLeave,CursorHoldI'
+})
+EOF
+```
+
 ## Configuration (Virtual Text Color)
 
 You can configure the `highlight` group in your init.vim:
