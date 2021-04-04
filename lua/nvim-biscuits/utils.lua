@@ -9,6 +9,10 @@ utils.console_log = function (the_string)
   -- dev.console_log(the_string)
 end
 
+utils.clear_log = function ()
+  --  dev.clear_log()
+end
+
 utils.merge_arrays = function(a, b)
   local result = {unpack(a)}
   table.move(b, 1, #b, #result + 1, result)
@@ -32,12 +36,6 @@ end
 
 utils.trim = function(s)
   return s:match'^()%s*$' and '' or s:match'^%s*(.*%S)'
-end
-
-utils.clear_log = function ()
-  if debug == true then
-    Path:new(debug_path):write('', 'w')
-  end
 end
 
 return utils

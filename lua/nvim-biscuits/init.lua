@@ -19,6 +19,9 @@ local make_biscuit_hl_group = function(lang)
 end
 
 nvim_biscuits.decorate_nodes = function (bufnr, lang)
+
+  utils.console_log("decorating nodes")
+
   local parser = ts_parsers.get_parser(bufnr, lang)
 
   if parser == nil then
@@ -42,7 +45,7 @@ nvim_biscuits.decorate_nodes = function (bufnr, lang)
 
       local lines = vim.api.nvim_buf_get_lines(bufnr, start_line, start_line+1, false)
 
-      local text = lines[1] or ''
+      local text = lines[1]
 
       text = utils.trim(text)
 
@@ -127,15 +130,19 @@ nvim_biscuits.BufferAttach = function(bufnr)
     nvim_biscuits.decorate_nodes(bufnr, lang)
   end
 
+
   vim.cmd("highlight default link " .. make_biscuit_hl_group(lang) .. " BiscuitColor")
 
-  if final_config.on_insert_event then
+  -- we need to fire once at the very start
+  nvim_biscuits.decorate_nodes(bufnr, lang)
+
+  if final_config.on_events ~= "" then
     vim.api.nvim_exec(string.format([[
       augroup Biscuits
         au!
-        au InsertLeave,CursorHoldI <buffer=%s> :lua require("nvim-biscuits").decorate_nodes(%s, "%s")
+        au %s <buffer=%s> :lua require("nvim-biscuits").decorate_nodes(%s, "%s")
       augroup END
-    ]], bufnr, bufnr, lang), false)
+    ]],final_config.on_events, bufnr, bufnr, lang), false)
   else
     vim.api.nvim_buf_attach(bufnr, false, {
       on_lines = on_lines,
