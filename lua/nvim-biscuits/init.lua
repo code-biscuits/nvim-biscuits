@@ -136,13 +136,22 @@ nvim_biscuits.BufferAttach = function(bufnr)
   -- we need to fire once at the very start
   nvim_biscuits.decorate_nodes(bufnr, lang)
 
-  if final_config.on_events ~= "" then
-    vim.api.nvim_exec(string.format([[
-      augroup Biscuits
-        au!
-        au %s <buffer=%s> :lua require("nvim-biscuits").decorate_nodes(%s, "%s")
-      augroup END
-    ]],final_config.on_events, bufnr, bufnr, lang), false)
+  local on_events = table.concat(final_config.on_events, ',')
+  if on_events ~= "" then
+    vim.api.nvim_exec(
+      string.format([[
+          augroup Biscuits
+            au!
+            au %s <buffer=%s> :lua require("nvim-biscuits").decorate_nodes(%s, "%s")
+          augroup END
+        ]],
+        on_events,
+        bufnr,
+        bufnr,
+        lang
+      ),
+      false
+    )
   else
     vim.api.nvim_buf_attach(bufnr, false, {
       on_lines = on_lines,

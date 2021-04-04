@@ -5,8 +5,8 @@ config.default_config = function ()
     min_distance = 5,
     max_length = 80,
     prefix_string = " // ",
-    -- on_events example: InsertLeave,CursorHoldI
-    on_events = ""
+    -- on_events example: { "InsertLeave", "CursorHoldI" }
+    on_events = {}
   }
 end
 

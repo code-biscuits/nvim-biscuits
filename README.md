@@ -66,7 +66,7 @@ This example only updates the biscuits when leaving insert mode or hold the curs
 ```lua
 lua <<EOF
 require('nvim-biscuits').setup({
-  on_events = 'InsertLeave,CursorHoldI'
+  on_events = { 'InsertLeave', 'CursorHoldI' }
 })
 EOF
 ```

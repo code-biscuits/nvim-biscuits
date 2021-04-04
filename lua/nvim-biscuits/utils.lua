@@ -20,6 +20,11 @@ utils.merge_arrays = function(a, b)
 end
 
 utils.merge_tables = function(t1, t2)
+  for k,v in pairs(t2) do t1[k] = v end
+  return t1
+end
+
+utils.merge_tables_deep = function(t1, t2)
   for k,v in pairs(t2) do
       if type(v) == "table" then
           if type(t1[k] or false) == "table" then
