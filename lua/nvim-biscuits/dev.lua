@@ -11,4 +11,10 @@ dev.console_log = function (the_string)
   end
 end
 
+dev.clear_log = function ()
+  if debug then
+    Path:new(debug_path):write('', 'w')
+  end
+end
+
 return dev
