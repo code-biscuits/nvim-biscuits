@@ -41,7 +41,7 @@ lua <<EOF
 require('nvim-biscuits').setup({
   default_config = {
     max_length = 12,
-    min_destance = 5,
+    min_distance = 5,
     prefix_string = " 📎 "
   },
   language_config = {
