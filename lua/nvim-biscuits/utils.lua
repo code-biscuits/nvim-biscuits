@@ -40,6 +40,7 @@ utils.merge_tables_deep = function(t1, t2)
 end
 
 utils.trim = function(s)
+  if s == nil then return '' end
   return s:match'^()%s*$' and '' or s:match'^%s*(.*%S)'
 end
 
