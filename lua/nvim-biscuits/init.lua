@@ -19,6 +19,10 @@ local make_biscuit_hl_group = function(lang)
 end
 
 nvim_biscuits.decorate_nodes = function (bufnr, lang)
+  if config.get_language_config(final_config, lang, "disabled")
+  then
+    return
+  end
 
   utils.console_log("decorating nodes")
 
