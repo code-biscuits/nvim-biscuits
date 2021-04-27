@@ -1,6 +1,6 @@
 # nvim-biscuits
 
-Every dev needs something sweet sometimes. Code Biscuits are in-editor annotations usually at the end of a closing tag/bracket/parenthisis/etc. They help you get the context of the end of that AST node so you don't have to navigate to find it.
+Every dev needs something sweet sometimes. Code Biscuits are in-editor annotations usually at the end of a closing tag/bracket/parenthesis/etc. They help you get the context of the end of that AST node so you don't have to navigate to find it.
 
 ## Installation
 
@@ -62,7 +62,7 @@ EOF
 
 ## Configuration (Custom events)
 
-If you want to decorate only on specific vim events you can use the `on_events` cofnig option. It is a string that takes in a comma separated list of vim autocmd events ([http://vimdoc.sourceforge.net/htmldoc/autocmd.html#autocmd-events](http://vimdoc.sourceforge.net/htmldoc/autocmd.html#autocmd-events))
+If you want to decorate only on specific vim events you can use the `on_events` config option. It is a string that takes in a comma separated list of vim autocmd events ([http://vimdoc.sourceforge.net/htmldoc/autocmd.html#autocmd-events](http://vimdoc.sourceforge.net/htmldoc/autocmd.html#autocmd-events))
 
 This example only updates the biscuits when leaving insert mode or hold the cursor in one place for long enough.
 
