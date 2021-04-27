@@ -96,7 +96,7 @@ As we make tailored handlers for specific languages we will create a table here 
 
 ## disabling languages
 
-To disable nvim-biscuits for any language, simple add `{ mylanguage = {disabled = true} }` to `my_languages` field in setup.
+To disable nvim-biscuits for any language, simple add `{ mylanguage = {disabled = true} }` to `language_config` field in setup.
 
 ## Development
 
