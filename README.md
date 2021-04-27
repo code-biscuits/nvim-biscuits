@@ -51,6 +51,9 @@ require('nvim-biscuits').setup({
     javascript = {
       prefix_string = " ✨ ",
       max_length = 80
+    },
+    mylanguage = {
+      disabled = true
     }
   }
 })
@@ -90,6 +93,10 @@ highlight BiscuitColorRust ctermfg=red
 We currently support all the languages supported in tree-sitter. Not all languages have specialized support, though most will probably need some.
 
 As we make tailored handlers for specific languages we will create a table here to track that.
+
+## disabling languages
+
+To disable nvim-biscuits for any language, simple add `{ mylanguage = {disabled = true} }` to `language_config` field in setup.
 
 ## Development
 
