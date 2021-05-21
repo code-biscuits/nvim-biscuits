@@ -76,11 +76,24 @@ nvim_biscuits.decorate_nodes = function (bufnr, lang)
       end
 
       if should_decorate then
+
+        local trim_by_words = config.get_language_config(final_config, lang, "trim_by_words")
         local max_length = config.get_language_config(final_config, lang, "max_length")
 
-        if string.len(text) >= max_length then
-          text = string.sub(text, 1, max_length)
-          text = text..'...'
+        if trim_by_words == true then
+          local words = {}
+          for word in string.gmatch(text, "%w+") do
+            words[#words+1] = word
+            if #words >= max_length then
+              break
+            end
+          end
+          text = table.concat(words, " ")
+        else
+          if string.len(text) >= max_length then
+            text = string.sub(text, 1, max_length)
+            text = text..'...'
+          end
         end
 
         text = text:gsub("\n", ' ')

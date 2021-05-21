@@ -6,7 +6,8 @@ config.default_config = function ()
     max_length = 80,
     prefix_string = " // ",
     -- on_events example: { "InsertLeave", "CursorHoldI" }
-    on_events = {}
+    on_events = {},
+    trim_by_words = false,
   }
 end
 

@@ -94,6 +94,19 @@ You may have tree-sitter set up for some languages in which you don't want nvim-
 
 To disable nvim-biscuits for any language, simply add `{ mylanguage = {disabled = true} }` to `language_config` field in setup. (where `mylanguage` is the language that you want to disable. eg: `python`, `dart`, etc)
 
+## Configuration (Trim by words)
+
+Using this settings, you can dictate the max length of a biscuit using whole words rather than just characters. The `max_length` determines how many words will show when this setting is enabled.
+
+```lua
+lua <<EOF
+require('nvim-biscuits').setup({
+  max_length = 2,
+  trim_by_words = true,
+})
+EOF
+```
+
 ## Supported Languages
 
 We currently support all the languages supported in tree-sitter. Not all languages have specialized support, though most will probably need some.
