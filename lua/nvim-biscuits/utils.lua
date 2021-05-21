@@ -15,7 +15,9 @@ end
 
 utils.merge_arrays = function(a, b)
   local result = {unpack(a)}
-  table.move(b, 1, #b, #result + 1, result)
+  for i = 1,#b do
+    result[#a + i] = b[i]
+  end
   return result
 end
 
