@@ -1,13 +1,15 @@
 local html = require("nvim-biscuits.languages.html")
 local vue = require("nvim-biscuits.languages.vue")
 local javascript = require("nvim-biscuits.languages.javascript")
+local python = require("nvim-biscuits.languages.python")
 
 local languages = {}
 
 local handled_languages = {
   html = html,
   javascript = javascript,
-  vue = vue
+  vue = vue,
+  python = python,
 }
 
 languages.should_decorate = function (language_name, ts_node, text)

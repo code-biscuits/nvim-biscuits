@@ -117,21 +117,7 @@ As we make tailored handlers for specific languages we will create a table here 
 
 While doing local dev, it can be nice to use the `utils.console_log` command to write runtime logs to `~/vim-biscuits.log`.
 
-In `lua/utils.lua`:
-
-```lua
--- uncomment line below for dev logging
--- local dev = require("nvim-biscuits.dev")
-
-utils.console_log = function (the_string)
-  -- uncomment line below for dev logging
-  -- dev.console_log(the_string)
-end
-```
-
-You can also change the log path in `dev.lua`.
-
-Make sure not to commit these changes.
+You can turn this on by passing DEBUG=true as an environment variable when launching Neovim.
 
 ## License
 

@@ -1,16 +1,22 @@
 
 local utils = {}
 
--- uncomment line below for dev logging
--- local dev = require("nvim-biscuits.dev")
+local is_debug_mode = os.getenv("DEBUG")
+
+if is_debug_mode then
+  Dev = require("nvim-biscuits.dev")
+end
 
 utils.console_log = function (the_string)
-  -- uncomment line below for dev logging
-  -- dev.console_log(the_string)
+  if is_debug_mode then
+    Dev.console_log(the_string)
+  end
 end
 
 utils.clear_log = function ()
-  --  dev.clear_log()
+  if is_debug_mode then
+    Dev.clear_log()
+  end
 end
 
 utils.merge_arrays = function(a, b)

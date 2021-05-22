@@ -24,7 +24,7 @@ local function get_node_last_line(ts_node)
   return end_string
 end
 
-language.should_decorate = function (ts_node, text)
+language.should_decorate = function (ts_node, text, bufnr)
   if string.len(text) < 8  then
     local end_string = get_node_last_line(ts_node)
     end_string = string.gsub(end_string, '/', '')
@@ -36,7 +36,7 @@ language.should_decorate = function (ts_node, text)
   return true
 end
 
-language.transform_text = function (ts_node, text)
+language.transform_text = function (ts_node, text, bufnr)
   local end_string = get_node_last_line(ts_node)
   end_string = string.gsub(end_string, '/', '')
   end_string = string.gsub(end_string, '>', '')

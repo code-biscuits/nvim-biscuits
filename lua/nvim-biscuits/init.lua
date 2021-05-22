@@ -71,7 +71,7 @@ nvim_biscuits.decorate_nodes = function (bufnr, lang)
         should_decorate = false
       end
 
-      if languages.should_decorate(lang, node, text) == false then
+      if languages.should_decorate(lang, node, text, bufnr) == false then
         should_decorate = false
       end
 
@@ -101,7 +101,7 @@ nvim_biscuits.decorate_nodes = function (bufnr, lang)
         local prefix_string = config.get_language_config(final_config, lang, "prefix_string")
 
         -- language specific text filter
-        text = languages.transform_text(lang, node, text)
+        text = languages.transform_text(lang, node, text, bufnr)
 
         if utils.trim(text) ~= '' then
           text = prefix_string..text

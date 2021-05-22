@@ -1,20 +1,16 @@
 local Path = require("plenary.path")
+local json = require "vendor.json"
 
 local dev = {}
 
-local debug = false
 local debug_path = '~/vim-biscuits.log'
 
 dev.console_log = function (the_string)
-  if debug then
-    Path:new(debug_path):write(the_string..'\n', 'a')
-  end
+  Path:new(debug_path):write(json.encode(the_string)..'\n', 'a')
 end
 
 dev.clear_log = function ()
-  if debug then
-    Path:new(debug_path):write('', 'w')
-  end
+  Path:new(debug_path):write('', 'w')
 end
 
 return dev
