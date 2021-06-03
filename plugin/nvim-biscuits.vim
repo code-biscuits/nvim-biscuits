@@ -1,6 +1,6 @@
 :lua require('nvim-biscuits')
 
-highlight default BiscuitColor ctermfg=gray
+highlight default BiscuitColor ctermfg=gray guifg=gray
 
 augroup NVIM_BISCUITS
     autocmd!
