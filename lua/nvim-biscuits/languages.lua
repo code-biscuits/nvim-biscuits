@@ -6,28 +6,24 @@ local python = require("nvim-biscuits.languages.python")
 local languages = {}
 
 local handled_languages = {
-  html = html,
-  javascript = javascript,
-  vue = vue,
-  python = python,
+    html = html,
+    javascript = javascript,
+    vue = vue,
+    python = python
 }
 
-languages.should_decorate = function (language_name, ts_node, text)
-  local language = handled_languages[language_name]
-  if language == nil then
-    return true
-  end
+languages.should_decorate = function(language_name, ts_node, text)
+    local language = handled_languages[language_name]
+    if language == nil then return true end
 
-  return language.should_decorate(ts_node, text)
+    return language.should_decorate(ts_node, text)
 end
 
-languages.transform_text = function (language_name, ts_node, text)
-  local language = handled_languages[language_name]
-  if language == nil then
-    return text
-  end
+languages.transform_text = function(language_name, ts_node, text)
+    local language = handled_languages[language_name]
+    if language == nil then return text end
 
-  return language.transform_text(ts_node, text)
+    return language.transform_text(ts_node, text)
 end
 
 return languages
