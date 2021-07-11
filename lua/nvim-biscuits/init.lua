@@ -12,10 +12,17 @@ local ts_parsers = require('nvim-treesitter.parsers')
 local ts_utils = require('nvim-treesitter.ts_utils')
 local nvim_biscuits = {}
 
+local should_render_biscuits = true
+
 local make_biscuit_hl_group = function(lang) return 'BiscuitColor' .. lang end
 
 nvim_biscuits.decorate_nodes = function(bufnr, lang)
     if config.get_language_config(final_config, lang, "disabled") then return end
+
+    if not should_render_biscuits then
+        vim.api.nvim_buf_clear_namespace(bufnr, 0, 0, -1)
+        return
+    end
 
     utils.console_log("decorating nodes")
 
@@ -138,6 +145,16 @@ nvim_biscuits.BufferAttach = function(bufnr)
     attached_buffers[bufnr] = true
 
     local lang = ts_parsers.get_buf_lang(bufnr)
+
+    local toggle_keybind = config.get_language_config(final_config, lang,
+                                                      "toggle_keybind")
+    if toggle_keybind ~= nil and
+        not config.get_language_config(final_config, lang, "disabled") then
+        vim.api.nvim_set_keymap("n", toggle_keybind,
+                                ":lua require('nvim-biscuits').toggle_biscuits()<CR>",
+                                {noremap = false})
+    end
+
     local on_lines = function() nvim_biscuits.decorate_nodes(bufnr, lang) end
 
     vim.cmd("highlight default link " .. make_biscuit_hl_group(lang) ..
@@ -162,6 +179,13 @@ nvim_biscuits.BufferAttach = function(bufnr)
             on_detach = function() attached_buffers[bufnr] = nil end
         })
     end
+end
+
+nvim_biscuits.toggle_biscuits = function()
+    should_render_biscuits = not should_render_biscuits
+    local bufnr = vim.api.nvim_get_current_buf()
+    local lang = ts_parsers.get_buf_lang(bufnr)
+    nvim_biscuits.decorate_nodes(bufnr, lang)
 end
 
 return nvim_biscuits

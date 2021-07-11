@@ -107,6 +107,37 @@ require('nvim-biscuits').setup({
 EOF
 ```
 
+## Configuration (Keybinding to toggle visibility)
+
+You can show or hide the biscuits by placing a `toggle_keybind` at the root of your config or inside a language config.
+
+```lua
+lua <<EOF
+require('nvim-biscuits').setup({
+  toggle_keybind = "<leader>cb"
+})
+EOF
+```
+
+OR
+
+```lua
+lua <<EOF
+require('nvim-biscuits').setup({
+  language_config = {
+    rust = {
+      toggle_keybind = "<leader>cb"
+    }
+  }
+})
+EOF
+```
+
+If you prefer to bind manually, the function is exposed as:
+```lua
+require('nvim-biscuits').toggle_biscuits()
+```
+
 ## Supported Languages
 
 We currently support all the languages supported in tree-sitter. Not all languages have specialized support, though most will probably need some.
