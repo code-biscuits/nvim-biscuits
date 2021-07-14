@@ -107,6 +107,18 @@ require('nvim-biscuits').setup({
 EOF
 ```
 
+## Configuration (Cursor Line Only)
+
+You can configure the biscuits to only show on the line that has your cursor. This can be useful if you find that default config makes the text too cluttered.
+
+```lua
+lua <<EOF
+require('nvim-biscuits').setup({
+  cursor_line_only = true
+})
+EOF
+```
+
 ## Supported Languages
 
 We currently support all the languages supported in tree-sitter. Not all languages have specialized support, though most will probably need some.
