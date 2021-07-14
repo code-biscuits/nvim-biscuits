@@ -66,14 +66,13 @@ nvim_biscuits.decorate_nodes = function(bufnr, lang)
             end
 
             local cursor = vim.api.nvim_win_get_cursor(0)
+            local should_clear = false
             if final_config.cursor_line_only and end_line + 1 ~= cursor[1] then
                 should_decorate = false
+                should_clear = true
             end
 
-            if should_decorate == false then
-                vim.api.nvim_buf_clear_namespace(bufnr, 0, end_line,
-                                                 end_line + 1)
-            elseif should_decorate == true then
+            if should_decorate == true then
                 local trim_by_words = config.get_language_config(final_config,
                                                                  lang,
                                                                  "trim_by_words")
@@ -114,6 +113,11 @@ nvim_biscuits.decorate_nodes = function(bufnr, lang)
                         {text, biscuit_highlight_group}
                     }, {})
                 end
+            end
+
+            if should_decorate == false and should_clear == true then
+                vim.api.nvim_buf_clear_namespace(bufnr, 0, end_line,
+                                                 end_line + 1)
             end
         end
 
