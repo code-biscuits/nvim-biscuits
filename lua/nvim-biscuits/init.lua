@@ -72,9 +72,8 @@ nvim_biscuits.decorate_nodes = function(bufnr, lang)
 
             if should_decorate == false then
                 vim.api.nvim_buf_clear_namespace(bufnr, 0, end_line,
-                                                 end_line + 2)
-            else
-
+                                                 end_line + 1)
+            elseif should_decorate == true then
                 local trim_by_words = config.get_language_config(final_config,
                                                                  lang,
                                                                  "trim_by_words")
