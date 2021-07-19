@@ -134,8 +134,21 @@ EOF
 ```
 
 If you prefer to bind manually, the function is exposed as:
+
 ```lua
 require('nvim-biscuits').toggle_biscuits()
+```
+
+## Configuration (Cursor Line Only)
+
+You can configure the biscuits to only show on the line that has your cursor. This can be useful if you find that default config makes the text too cluttered
+
+```lua
+lua <<EOF
+require('nvim-biscuits').setup({
+  cursor_line_only = true
+})
+EOF
 ```
 
 ## Supported Languages
