@@ -107,9 +107,41 @@ require('nvim-biscuits').setup({
 EOF
 ```
 
+## Configuration (Keybinding to toggle visibility)
+
+You can show or hide the biscuits by placing a `toggle_keybind` at the root of your config or inside a language config.
+
+```lua
+lua <<EOF
+require('nvim-biscuits').setup({
+  toggle_keybind = "<leader>cb"
+})
+EOF
+```
+
+OR
+
+```lua
+lua <<EOF
+require('nvim-biscuits').setup({
+  language_config = {
+    rust = {
+      toggle_keybind = "<leader>cb"
+    }
+  }
+})
+EOF
+```
+
+If you prefer to bind manually, the function is exposed as:
+
+```lua
+require('nvim-biscuits').toggle_biscuits()
+```
+
 ## Configuration (Cursor Line Only)
 
-You can configure the biscuits to only show on the line that has your cursor. This can be useful if you find that default config makes the text too cluttered.
+You can configure the biscuits to only show on the line that has your cursor. This can be useful if you find that default config makes the text too cluttered
 
 ```lua
 lua <<EOF
