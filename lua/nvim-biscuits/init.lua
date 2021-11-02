@@ -121,11 +121,13 @@ nvim_biscuits.decorate_nodes = function(bufnr, lang)
                     vim.api.nvim_buf_clear_namespace(bufnr,
                                                      biscuit_highlight_group,
                                                      end_line, end_line + 1)
-                    vim.api.nvim_buf_set_virtual_text(bufnr,
-                                                      biscuit_highlight_group,
-                                                      end_line, {
-                        {text, biscuit_highlight_group_name}
-                    }, {})
+                    vim.api.nvim_buf_set_extmark(bufnr, biscuit_highlight_group, end_line, 0, {
+                        virt_text_pos = "eol",
+                        virt_text = {
+                            {text, biscuit_highlight_group_name}
+                        },
+                        hl_mode = "combine"
+                    })
                 end
             end
 
