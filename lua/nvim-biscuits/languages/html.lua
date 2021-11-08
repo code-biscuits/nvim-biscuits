@@ -29,7 +29,10 @@ language.should_decorate = function(ts_node, text, bufnr)
 
         if text == end_string then return false end
     end
-    return true
+
+    if ts_node:type() == "element" then return true end
+
+    return false
 end
 
 language.transform_text = function(ts_node, text, bufnr)
