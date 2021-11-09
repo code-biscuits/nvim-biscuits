@@ -111,10 +111,13 @@ EOF
 
 You can show or hide the biscuits by placing a `toggle_keybind` at the root of your config or inside a language config.
 
+We also expose an optional flag, `show_on_start`, to enable biscuits to show on initial load. This value defaults to `false`;
+
 ```lua
 lua <<EOF
 require('nvim-biscuits').setup({
-  toggle_keybind = "<leader>cb"
+  toggle_keybind = "<leader>cb",
+  show_on_start = true -- defaults to false
 })
 EOF
 ```
