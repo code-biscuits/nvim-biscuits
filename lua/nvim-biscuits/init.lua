@@ -10,9 +10,7 @@ if not has_ts then error("nvim-treesitter must be installed") end
 
 local ts_parsers = require('nvim-treesitter.parsers')
 local ts_utils = require('nvim-treesitter.ts_utils')
-local nvim_biscuits = {}
-
-local should_render_biscuits = true
+local nvim_biscuits = {should_render_biscuits = true}
 
 local make_biscuit_hl_group_name =
     function(lang) return 'BiscuitColor' .. lang end
@@ -33,7 +31,7 @@ nvim_biscuits.decorate_nodes = function(bufnr, lang)
     local biscuit_highlight_group = vim.api.nvim_create_namespace(
                                         biscuit_highlight_group_name)
 
-    if not should_render_biscuits then
+    if not nvim_biscuits.should_render_biscuits then
         vim.api.nvim_buf_clear_namespace(bufnr, biscuit_highlight_group, 0, -1)
         return
     end
@@ -177,8 +175,13 @@ nvim_biscuits.BufferAttach = function(bufnr)
     vim.cmd("highlight default link " .. make_biscuit_hl_group_name(lang) ..
                 " BiscuitColor")
 
-    -- we need to fire once at the very start
-    nvim_biscuits.decorate_nodes(bufnr, lang)
+    -- we need to fire once at the very start if config allows
+    if toggle_keybind ~= nil and
+        config.get_language_config(final_config, lang, "show_on_start") == true then
+        nvim_biscuits.decorate_nodes(bufnr, lang)
+    else
+        nvim_biscuits.should_render_biscuits = false
+    end
 
     local on_events = table.concat(final_config.on_events, ',')
     if on_events ~= "" then
@@ -206,7 +209,8 @@ nvim_biscuits.BufferAttach = function(bufnr)
 end
 
 nvim_biscuits.toggle_biscuits = function()
-    should_render_biscuits = not should_render_biscuits
+    nvim_biscuits.should_render_biscuits =
+        not nvim_biscuits.should_render_biscuits
     local bufnr = vim.api.nvim_get_current_buf()
     local lang = ts_parsers.get_buf_lang(bufnr)
     nvim_biscuits.decorate_nodes(bufnr, lang)
