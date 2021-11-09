@@ -41,4 +41,12 @@ utils.trim = function(s)
     return s:match '^()%s*$' and '' or s:match '^%s*(.*%S)'
 end
 
+utils.list_contains = function(list, needle)
+    for index, value in ipairs(list) do
+        if value == needle then return true; end
+    end
+
+    return false;
+end
+
 return utils

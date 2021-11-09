@@ -20,7 +20,7 @@ local make_biscuit_hl_group_name =
 nvim_biscuits.decorate_nodes = function(bufnr, lang)
     if config.get_language_config(final_config, lang, "disabled") then return end
 
-    utils.console_log("decorating nodes")
+    utils.console_log("decorating nodes for " .. lang)
 
     local parser = ts_parsers.get_parser(bufnr, lang)
 
@@ -121,11 +121,10 @@ nvim_biscuits.decorate_nodes = function(bufnr, lang)
                     vim.api.nvim_buf_clear_namespace(bufnr,
                                                      biscuit_highlight_group,
                                                      end_line, end_line + 1)
-                    vim.api.nvim_buf_set_extmark(bufnr, biscuit_highlight_group, end_line, 0, {
+                    vim.api.nvim_buf_set_extmark(bufnr, biscuit_highlight_group,
+                                                 end_line, 0, {
                         virt_text_pos = "eol",
-                        virt_text = {
-                            {text, biscuit_highlight_group_name}
-                        },
+                        virt_text = {{text, biscuit_highlight_group_name}},
                         hl_mode = "combine"
                     })
                 end
