@@ -172,8 +172,10 @@ nvim_biscuits.BufferAttach = function(bufnr)
 
     local on_lines = function() nvim_biscuits.decorate_nodes(bufnr, lang) end
 
-    vim.cmd("highlight default link " .. make_biscuit_hl_group_name(lang) ..
-                " BiscuitColor")
+    if not lang:find("-") then
+        vim.cmd("highlight default link " .. make_biscuit_hl_group_name(lang) ..
+                    " BiscuitColor")
+    end
 
     -- we need to fire once at the very start if config allows
     if toggle_keybind ~= nil and
