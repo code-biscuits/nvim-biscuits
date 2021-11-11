@@ -159,7 +159,7 @@ nvim_biscuits.BufferAttach = function(bufnr)
 
     attached_buffers[bufnr] = true
 
-    local lang = ts_parsers.get_buf_lang(bufnr)
+    local lang = ts_parsers.get_buf_lang(bufnr):gsub("-", "")
 
     local toggle_keybind = config.get_language_config(final_config, lang,
                                                       "toggle_keybind")
@@ -172,10 +172,8 @@ nvim_biscuits.BufferAttach = function(bufnr)
 
     local on_lines = function() nvim_biscuits.decorate_nodes(bufnr, lang) end
 
-    if not lang:find("-") then
-        vim.cmd("highlight default link " .. make_biscuit_hl_group_name(lang) ..
-                    " BiscuitColor")
-    end
+    vim.cmd("highlight default link " .. make_biscuit_hl_group_name(lang) ..
+                " BiscuitColor")
 
     -- we need to fire once at the very start if config allows
     if toggle_keybind ~= nil and
