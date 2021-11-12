@@ -159,7 +159,7 @@ nvim_biscuits.BufferAttach = function(bufnr)
 
     attached_buffers[bufnr] = true
 
-    local lang = ts_parsers.get_buf_lang(bufnr)
+    local lang = ts_parsers.get_buf_lang(bufnr):gsub("-", "")
 
     local toggle_keybind = config.get_language_config(final_config, lang,
                                                       "toggle_keybind")
