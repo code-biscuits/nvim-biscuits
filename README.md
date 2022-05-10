@@ -162,7 +162,7 @@ As we make tailored handlers for specific languages we will create a table here 
 
 ## Development
 
-While doing local dev, it can be nice to use the `utils.console_log` command to write runtime logs to `~/vim-biscuits.log`.
+While doing local dev, it can be nice to use the `utils.console_log` command to write runtime logs to `~/.cache/nvim/nvim-biscuits.log`.
 
 You can turn this on by passing DEBUG=true as an environment variable when launching Neovim.
 
