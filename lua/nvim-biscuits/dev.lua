@@ -3,7 +3,7 @@ local json = require "vendor.json"
 
 local dev = {}
 
-local debug_path = '~/vim-biscuits.log'
+local debug_path = vim.fn.stdpath('cache') .. '/nvim-biscuits.log'
 
 dev.console_log = function(the_string)
     Path:new(debug_path):write(json.encode(the_string) .. '\n', 'a')
