@@ -142,6 +142,10 @@ nvim_biscuits.decorate_nodes = function(bufnr, lang)
 end
 
 nvim_biscuits.setup = function(user_config)
+    if user_config == nil then
+        user_config = {}
+    end
+    
     final_config = utils.merge_tables(final_config, user_config)
 
     if user_config.default_config then
