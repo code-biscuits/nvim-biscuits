@@ -170,7 +170,7 @@ nvim_biscuits.BufferAttach = function(bufnr)
     if toggle_keybind ~= nil and
         not config.get_language_config(final_config, lang, "disabled") then
         vim.api.nvim_set_keymap("n", toggle_keybind,
-                                ":lua require('nvim-biscuits').toggle_biscuits()<CR>",
+                                "<Cmd>lua require('nvim-biscuits').toggle_biscuits()<CR>",
                                 {noremap = false})
     end
 
