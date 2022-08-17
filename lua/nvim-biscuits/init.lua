@@ -171,7 +171,7 @@ nvim_biscuits.BufferAttach = function(bufnr)
         not config.get_language_config(final_config, lang, "disabled") then
         vim.api.nvim_set_keymap("n", toggle_keybind,
                                 "<Cmd>lua require('nvim-biscuits').toggle_biscuits()<CR>",
-                                {noremap = false})
+                                { noremap = false, desc = "toggle biscuits" })
     end
 
     local on_lines = function() nvim_biscuits.decorate_nodes(bufnr, lang) end
