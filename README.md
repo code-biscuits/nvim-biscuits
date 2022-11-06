@@ -2,6 +2,12 @@
 
 Every dev needs something sweet sometimes. Code Biscuits are in-editor annotations usually at the end of a closing tag/bracket/parenthesis/etc. They help you get the context of the end of that AST node so you don't have to navigate to find it.
 
+## Demo
+
+Here you can see the plugin being used on a Go file with `cursor_line_only` turned on.
+
+![Demo of the plugin being used on a Golang file](./assets/demo.gif)
+
 ## Installation
 
 In your nvim config, add the Plug dependencies:
