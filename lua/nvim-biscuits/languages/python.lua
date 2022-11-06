@@ -9,10 +9,6 @@ language.should_decorate = function(ts_node, text, bufnr)
 end
 
 language.transform_text = function(ts_node, text, bufnr)
-
-    -- Dev.console_log("Node")
-    -- Dev.console_log(ts_node)
-
     local start_line, start_col, end_line, end_col =
         ts_utils.get_node_range(ts_node)
     local parent_start_line, parent_start_col, parent_end_line, parent_end_col =
@@ -28,7 +24,7 @@ language.transform_text = function(ts_node, text, bufnr)
                                              false)
     local text = lines[1]
 
-    -- text = html.transform_text(ts_node, text)
+    -- text = html.transform_text(ts_node, text, bufnr)
     return utils.trim(text)
 end
 

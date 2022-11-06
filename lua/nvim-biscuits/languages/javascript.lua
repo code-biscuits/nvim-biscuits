@@ -10,7 +10,7 @@ language.should_decorate = function(ts_node, text, bufnr)
 
     local should_decorate = true
     if utils.list_contains(elements, type) then
-        should_decorate = html.should_decorate(ts_node, text)
+        should_decorate = html.should_decorate(ts_node, text, bufnr)
     end
 
     local ignored_element_types = {
@@ -26,7 +26,7 @@ language.should_decorate = function(ts_node, text, bufnr)
 end
 
 language.transform_text = function(ts_node, text, bufnr)
-    text = html.transform_text(ts_node, text)
+    text = html.transform_text(ts_node, text, bufnr)
     return utils.trim(text)
 end
 
