@@ -7,7 +7,8 @@ config.default_config = function()
         prefix_string = " // ",
         -- on_events example: { "InsertLeave", "CursorHoldI" }
         on_events = {},
-        trim_by_words = false
+        trim_by_words = false,
+        show_on_start = true
     }
 end
 

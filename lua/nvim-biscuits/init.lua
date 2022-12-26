@@ -22,8 +22,10 @@ nvim_biscuits.decorate_nodes = function(bufnr, lang)
 
     local parser = ts_parsers.get_parser(bufnr, lang)
 
+    utils.console_log("parser  " .. lang)
+
     if parser == nil then
-        utils.console_log('no parser for for ' .. lang)
+        utils.console_log('no parser for ' .. lang)
         return
     end
 
@@ -163,7 +165,7 @@ nvim_biscuits.BufferAttach = function(bufnr)
 
     attached_buffers[bufnr] = true
 
-    local lang = ts_parsers.get_buf_lang(bufnr):gsub("-", "")
+    local lang = ts_parsers.get_buf_lang(bufnr)
 
     local toggle_keybind = config.get_language_config(final_config, lang,
                                                       "toggle_keybind")
@@ -181,7 +183,10 @@ nvim_biscuits.BufferAttach = function(bufnr)
 
     -- we need to fire once at the very start if config allows
     if (not toggle_keybind) or config.get_language_config(final_config, lang, "show_on_start") then
-        nvim_biscuits.decorate_nodes(bufnr, lang)
+        if bufnr then
+            utils.console_log('bufnr ' .. bufnr)
+            nvim_biscuits.decorate_nodes(bufnr, lang)
+        end
     else
         nvim_biscuits.should_render_biscuits = false
     end
