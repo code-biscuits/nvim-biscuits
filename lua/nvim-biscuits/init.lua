@@ -180,8 +180,7 @@ nvim_biscuits.BufferAttach = function(bufnr)
                 " BiscuitColor")
 
     -- we need to fire once at the very start if config allows
-    if toggle_keybind ~= nil and
-        config.get_language_config(final_config, lang, "show_on_start") == true then
+    if (not toggle_keybind) or config.get_language_config(final_config, lang, "show_on_start") then
         nvim_biscuits.decorate_nodes(bufnr, lang)
     else
         nvim_biscuits.should_render_biscuits = false
