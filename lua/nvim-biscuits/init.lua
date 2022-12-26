@@ -13,16 +13,14 @@ local ts_utils = require('nvim-treesitter.ts_utils')
 local nvim_biscuits = {should_render_biscuits = true}
 
 local make_biscuit_hl_group_name =
-    function(lang) return 'BiscuitColor' .. lang end
+    function(lang)
+        return 'BiscuitColor' .. lang
+    end
 
 nvim_biscuits.decorate_nodes = function(bufnr, lang)
     if config.get_language_config(final_config, lang, "disabled") then return end
 
-    utils.console_log("decorating nodes for " .. lang)
-
     local parser = ts_parsers.get_parser(bufnr, lang)
-
-    utils.console_log("parser  " .. lang)
 
     if parser == nil then
         utils.console_log('no parser for ' .. lang)
@@ -51,7 +49,6 @@ nvim_biscuits.decorate_nodes = function(bufnr, lang)
 
             local start_line, start_col, end_line, end_col =
                 ts_utils.get_node_range(node)
-            -- local text = ts_utils.get_node_text(node)[1]
 
             local lines = vim.api.nvim_buf_get_lines(bufnr, start_line,
                                                      start_line + 1, false)
@@ -165,7 +162,7 @@ nvim_biscuits.BufferAttach = function(bufnr)
 
     attached_buffers[bufnr] = true
 
-    local lang = ts_parsers.get_buf_lang(bufnr)
+    local lang = ts_parsers.get_buf_lang(bufnr):gsub("-", "")
 
     local toggle_keybind = config.get_language_config(final_config, lang,
                                                       "toggle_keybind")
@@ -178,13 +175,14 @@ nvim_biscuits.BufferAttach = function(bufnr)
 
     local on_lines = function() nvim_biscuits.decorate_nodes(bufnr, lang) end
 
+    if lang then
     vim.cmd("highlight default link " .. make_biscuit_hl_group_name(lang) ..
                 " BiscuitColor")
+    end
 
     -- we need to fire once at the very start if config allows
     if (not toggle_keybind) or config.get_language_config(final_config, lang, "show_on_start") then
         if bufnr then
-            utils.console_log('bufnr ' .. bufnr)
             nvim_biscuits.decorate_nodes(bufnr, lang)
         end
     else
@@ -220,7 +218,7 @@ nvim_biscuits.toggle_biscuits = function()
     nvim_biscuits.should_render_biscuits =
         not nvim_biscuits.should_render_biscuits
     local bufnr = vim.api.nvim_get_current_buf()
-    local lang = ts_parsers.get_buf_lang(bufnr)
+    local lang = ts_parsers.get_buf_lang(bufnr):gsub("-", "")
     nvim_biscuits.decorate_nodes(bufnr, lang)
 end
 
