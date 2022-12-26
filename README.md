@@ -12,11 +12,25 @@ Here you can see the plugin being used on a Go file with `cursor_line_only` turn
 
 In your nvim config, add the Plug dependencies:
 
+Using Vim Plug:
+
 ```lua
 call plug#begin()
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'code-biscuits/nvim-biscuits'
 call plug#end()
+```
+Using Packer:
+
+```lua
+use {
+  'code-biscuits/nvim-biscuits',
+  requires = {
+    'nvim-treesitter/nvim-treesitter',
+     run = ':TSUpdate'
+  },
+}
+
 ```
 
 You will also need to configure which language parsers you want to have enabled for tree-sitter. "maintained" currently will install 40 languages. "all" will install even more.
