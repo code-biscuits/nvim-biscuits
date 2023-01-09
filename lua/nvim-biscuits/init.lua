@@ -140,34 +140,15 @@ nvim_biscuits.decorate_nodes = function(bufnr, lang)
     end
 end
 
-nvim_biscuits.setup = function(user_config)
-    if user_config == nil then
-        user_config = {}
-    end
-
-    final_config = utils.merge_tables(final_config, user_config)
-
-    if user_config.default_config then
-        final_config = utils.merge_tables(final_config,
-                                          user_config.default_config)
-    end
-
-    utils.clear_log()
-end
-
 local attached_buffers = {}
-nvim_biscuits.BufferAttach = function(bufnr)
-    bufnr = bufnr or vim.api.nvim_get_current_buf()
+nvim_biscuits.BufferAttach = function(bufnr, lang)
     if attached_buffers[bufnr] then return end
 
     attached_buffers[bufnr] = true
 
-    local lang = ts_parsers.get_buf_lang(bufnr):gsub("-", "")
-
     local toggle_keybind = config.get_language_config(final_config, lang,
                                                       "toggle_keybind")
-    if toggle_keybind ~= nil and
-        not config.get_language_config(final_config, lang, "disabled") then
+    if toggle_keybind ~= nil then
         vim.api.nvim_set_keymap("n", toggle_keybind,
                                 "<Cmd>lua require('nvim-biscuits').toggle_biscuits()<CR>",
                                 { noremap = false, desc = "toggle biscuits" })
@@ -212,6 +193,40 @@ nvim_biscuits.BufferAttach = function(bufnr)
             on_detach = function() attached_buffers[bufnr] = nil end
         })
     end
+end
+
+nvim_biscuits.setup = function(user_config)
+    if user_config == nil then
+        user_config = {}
+    end
+
+    final_config = utils.merge_tables(final_config, user_config)
+
+    if user_config.default_config then
+        final_config = utils.merge_tables(final_config,
+                                          user_config.default_config)
+    end
+
+    -- This uses the official nvim-treesitter api to attach/detach to buffers
+    -- see: https://github.com/nvim-treesitter/nvim-treesitter#adding-modules
+    -- the attach/detach functions will not run if the is_supported function
+    -- returns false.
+    require'nvim-treesitter'.define_modules {
+        nvim_biscuits = {
+            enable = true,
+            attach = function(bufnr, lang)
+                nvim_biscuits.BufferAttach(bufnr, lang)
+            end,
+            detach = function(bufnr)
+                attached_buffers[bufnr] = nil
+            end,
+            is_supported = function(lang)
+                return not config.get_language_config(final_config, lang, "disabled")
+            end
+        }
+    }
+
+    utils.clear_log()
 end
 
 nvim_biscuits.toggle_biscuits = function()
