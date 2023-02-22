@@ -1,4 +1,3 @@
-local ts_utils = require('nvim-treesitter.ts_utils')
 local utils = require("nvim-biscuits.utils")
 
 local language = {}
@@ -7,7 +6,7 @@ local function get_node_last_line(ts_node)
     local bufnr = vim.api.nvim_get_current_buf()
 
     local start_row, start_col, end_row, end_col =
-        ts_utils.get_node_range(ts_node)
+        vim.treesitter.get_node_range(ts_node)
 
     local end_lines = vim.api.nvim_buf_get_lines(bufnr, end_row, end_row + 1,
                                                  false)

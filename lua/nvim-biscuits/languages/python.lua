@@ -1,4 +1,3 @@
-local ts_utils = require('nvim-treesitter.ts_utils')
 local utils = require("nvim-biscuits.utils")
 
 local language = {}
@@ -10,9 +9,9 @@ end
 
 language.transform_text = function(ts_node, text, bufnr)
     local start_line, start_col, end_line, end_col =
-        ts_utils.get_node_range(ts_node)
+        vim.treesitter.get_node_range(ts_node)
     local parent_start_line, parent_start_col, parent_end_line, parent_end_col =
-        ts_utils.get_node_range(ts_node:parent())
+        vim.treesitter.get_node_range(ts_node:parent())
     if parent_start_line == start_line - 1 then
         start_line = parent_start_line
         start_col = parent_start_col

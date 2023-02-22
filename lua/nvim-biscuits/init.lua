@@ -48,7 +48,7 @@ nvim_biscuits.decorate_nodes = function(bufnr, lang)
                                           ts_utils.get_named_children(node))
 
             local start_line, start_col, end_line, end_col =
-                ts_utils.get_node_range(node)
+                vim.treesitter.get_node_range(node)
 
             local lines = vim.api.nvim_buf_get_lines(bufnr, start_line,
                                                      start_line + 1, false)
