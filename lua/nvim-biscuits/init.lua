@@ -68,6 +68,9 @@ nvim_biscuits.decorate_nodes = function(bufnr, lang)
     local children = {}
     local has_nodes = true
 
+    vim.api.nvim_buf_clear_namespace(bufnr, biscuit_highlight_group,
+    0, -1)
+
     while has_nodes do
         for index, node in ipairs(nodes) do
             children = utils.merge_arrays(children,
