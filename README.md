@@ -20,6 +20,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'code-biscuits/nvim-biscuits'
 call plug#end()
 ```
+
 Using Packer:
 
 ```lua
@@ -170,6 +171,18 @@ You can configure the biscuits to only show on the line that has your cursor. Th
 lua <<EOF
 require('nvim-biscuits').setup({
   cursor_line_only = true
+})
+EOF
+```
+
+## Configuration (Max File Size)
+
+You can set a maximum file size to bail out of biscuits if you think they are slowing down your editor. The value can be a string evaluating to a human readable file size or a number in bytes. Values are 1024 based. Supported case-insensitive suffixes: b, kb, kib, mb, mib, gb, gib, tb, tib, pb, pib
+
+```lua
+lua <<EOF
+require('nvim-biscuits').setup({
+  max_file_size = '100kb'
 })
 EOF
 ```

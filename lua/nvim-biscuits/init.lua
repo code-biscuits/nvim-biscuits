@@ -2,8 +2,33 @@ require('nvim-treesitter')
 local utils = require("nvim-biscuits.utils")
 local config = require("nvim-biscuits.config")
 local languages = require("nvim-biscuits.languages")
+local parse = require("vendor.parse")
 
 local final_config = config.default_config()
+
+local function is_file_too_big()
+    local file_size = vim.fn.wordcount().bytes
+
+    local max_file_size = final_config.max_file_size
+    if final_config.max_file_size == nil then
+        max_file_size = 0
+    end
+
+    local original_max_file_size = max_file_size
+
+    if type(max_file_size) == "string" then
+        max_file_size = parse.file_size(max_file_size)
+    else
+        return nil
+    end
+
+    if max_file_size == nil then
+        vim.notify("nvim-biscuits: max_file_size is invalid. Valid case-insensitive values include: b, kb, kib, mb, mib, gb, gib, tb, tib, pb, pib")
+        max_file_size = 0
+    end
+
+    return max_file_size > 0 and file_size > max_file_size
+end
 
 local has_ts, _ = pcall(require, 'nvim-treesitter')
 if not has_ts then error("nvim-treesitter must be installed") end
@@ -11,6 +36,7 @@ if not has_ts then error("nvim-treesitter must be installed") end
 local ts_parsers = require('nvim-treesitter.parsers')
 local ts_utils = require('nvim-treesitter.ts_utils')
 local nvim_biscuits = {should_render_biscuits = true}
+
 
 local make_biscuit_hl_group_name =
     function(lang)
@@ -59,20 +85,26 @@ nvim_biscuits.decorate_nodes = function(bufnr, lang)
 
             local should_decorate = true
 
+            -- bail out of empty text
             if text == '' then should_decorate = false end
 
+            -- bail out of short text
             if string.len(text) <= 1 then should_decorate = false end
 
+            -- bail out if start line and end line are the same
             if start_line == end_line then should_decorate = false end
 
+            -- bail out distance is less than minimum distance
             if end_line - start_line < final_config.min_distance then
                 should_decorate = false
             end
 
+            -- bail out if this node should not be decorated based on language specific filters
             if languages.should_decorate(lang, node, text, bufnr) == false then
                 should_decorate = false
             end
 
+            -- bail out if the user has cursor line only on and we are not on their cursor line
             local cursor = vim.api.nvim_win_get_cursor(0)
             local should_clear = false
             if final_config.cursor_line_only and end_line + 1 ~= cursor[1] then
@@ -154,6 +186,11 @@ nvim_biscuits.BufferAttach = function(bufnr, lang)
                                 { noremap = false, desc = "toggle biscuits" })
     end
 
+    if is_file_too_big() then
+        vim.notify_once("nvim-biscuits: File is larger than configured max_file_size")
+        return
+    end
+
     local on_lines = function() nvim_biscuits.decorate_nodes(bufnr, lang) end
 
     if lang then
@@ -230,6 +267,11 @@ nvim_biscuits.setup = function(user_config)
 end
 
 nvim_biscuits.toggle_biscuits = function()
+    if is_file_too_big() then
+        vim.notify("nvim-biscuits: File is larger than configured max_file_size")
+        return
+    end
+
     nvim_biscuits.should_render_biscuits =
         not nvim_biscuits.should_render_biscuits
     local bufnr = vim.api.nvim_get_current_buf()

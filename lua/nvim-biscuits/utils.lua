@@ -10,8 +10,14 @@ end
 
 utils.clear_log = function() if is_debug_mode then Dev.clear_log() end end
 
+utils.clone_table = function(_table)
+    local new_table = { }
+    for k, v in pairs(_table) do new_table[k] = v end
+    return setmetatable(new_table, getmetatable(_table))
+end
+
 utils.merge_arrays = function(a, b)
-    local result = {unpack(a)}
+    local result = utils.clone_table(a)
     for i = 1, #b do result[#a + i] = b[i] end
     return result
 end
