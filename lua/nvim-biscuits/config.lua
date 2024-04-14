@@ -8,7 +8,15 @@ config.default_config = function()
         -- on_events example: { "InsertLeave", "CursorHoldI" }
         on_events = {},
         trim_by_words = false,
-        show_on_start = true
+        show_on_start = true,
+        language_config = {
+            help = {
+                disabled = true
+             },
+             vimdoc = {
+                disabled = true
+             }
+        }
     }
 end
 
