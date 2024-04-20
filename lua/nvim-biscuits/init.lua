@@ -177,6 +177,15 @@ end
 
 local attached_buffers = {}
 nvim_biscuits.BufferAttach = function(bufnr, lang)
+
+    if bufnr == nil then
+        bufnr = vim.api.nvim_get_current_buf()
+    end
+
+    if lang == nil then
+        lang = ts_parsers.get_buf_lang(bufnr):gsub("-", "")
+    end
+
     if attached_buffers[bufnr] then return end
 
     attached_buffers[bufnr] = true
