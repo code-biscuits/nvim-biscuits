@@ -187,6 +187,47 @@ require('nvim-biscuits').setup({
 EOF
 ```
 
+## Configuration (lazy.nvim support)
+
+If you are using [lazy.nvim](https://github.com/folke/lazy.nvim), you will have to wire up nvim-biscuits is a specific way.
+
+Since you are using lazy.nvim, it is recommended to not use the internal nvim-biscuits [visibilty toggle](https://github.com/code-biscuits/nvim-biscuits?tab=readme-ov-file#configuration-keybinding-to-toggle-visibility).
+
+When setting your `keys` value, you just need to call `BufAttach` inside the callback function:
+
+```lua
+keys = {
+  {
+    "<leader>bb",
+    function()
+      require("nvim-biscuits").BufferAttach()
+    end,
+    mode = "n",
+    desc = "Enable Biscuits",
+  },
+},
+```
+
+If you want to lazy load nvim-biscuits but also use the internal visibilty toggle, there are a couple ways of setting things up. If you are letting `show_on_start` default to `false`, you will need to manually toggle the biscuits in the callback function.
+
+```lua
+keys = {
+  {
+    "<leader>bb",
+    function()
+      local nvim_biscuits =
+      require("nvim-biscuits")
+      nvim_biscuits.BufferAttach()
+      nvim_biscuits.toggle_biscuits()
+    end,
+    mode = "n",
+    desc = "Enable Biscuits",
+  },
+},
+```
+
+A cleaner way of doing it is to set `show_on_start` to true for nvim-biscuits. Then, you do not need to call `toggle_biscuits` in your lazy.nvim callback.
+
 ## Supported Languages
 
 We currently support all the languages supported in tree-sitter. Not all languages have specialized support, though most will probably need some.
