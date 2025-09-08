@@ -222,24 +222,32 @@ nvim_biscuits.BufferAttach = function(bufnr, lang)
     local on_events = table.concat(final_config.on_events, ',')
     if on_events ~= "" then
         vim.api.nvim_exec(string.format([[
-          augroup Biscuits
+          augroup Biscuits-%s
             au!
             au %s <buffer=%s> :lua require("nvim-biscuits").decorate_nodes(%s, "%s")
           augroup END
-        ]], on_events, bufnr, bufnr, lang), false)
+        ]], bufnr, on_events, bufnr, bufnr, lang), false)
     elseif final_config.cursor_line_only == true then
         vim.api.nvim_exec(string.format([[
-          augroup Biscuits
+          augroup Biscuits-%s
             au!
             au %s <buffer=%s> :lua require("nvim-biscuits").decorate_nodes(%s, "%s")
           augroup END
-        ]], "CursorMoved,CursorMovedI", bufnr, bufnr, lang), false)
+        ]], bufnr, "CursorMoved,CursorMovedI", bufnr, bufnr, lang), false)
     else
         vim.api.nvim_buf_attach(bufnr, false,
                                 {
             on_lines = on_lines,
 
-            on_detach = function() attached_buffers[bufnr] = nil end
+            on_detach = function() 
+                attached_buffers[bufnr] = nil
+                -- Clean up buffer-specific autogroup if it exists
+                vim.api.nvim_exec(string.format([[
+                  augroup Biscuits-%s
+                    au!
+                  augroup END
+                ]], bufnr), false)
+            end
         })
     end
 end
@@ -268,6 +276,12 @@ nvim_biscuits.setup = function(user_config)
             end,
             detach = function(bufnr)
                 attached_buffers[bufnr] = nil
+                -- Clean up buffer-specific autogroup
+                vim.api.nvim_exec(string.format([[
+                  augroup Biscuits-%s
+                    au!
+                  augroup END
+                ]], bufnr), false)
             end,
             is_supported = function(lang)
                 return not config.get_language_config(final_config, lang, "disabled")
