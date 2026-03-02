@@ -47,20 +47,27 @@ return {
 }
 ```
 
-You will also need to configure which language parsers you want to have enabled for tree-sitter. "maintained" currently will install 40 languages. "all" will install even more.
+You also need to install Tree-sitter parsers for the languages you use.
+
+If you are on the legacy `nvim-treesitter` module API (with `nvim-treesitter.configs`):
 
 ```lua
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained",
-  ...
+  ensure_installed = "all",
 }
 EOF
 ```
 
+If you are on the rewritten `nvim-treesitter` API (without `nvim-treesitter.configs`), install parsers with:
+
+```vim
+:TSInstall lua javascript typescript html css
+```
+
 ## Configuration
 
-Basic configuration is simple:
+Basic configuration is simple, and is required when using the rewritten `nvim-treesitter` API:
 
 ```lua
 lua require('nvim-biscuits').setup({})

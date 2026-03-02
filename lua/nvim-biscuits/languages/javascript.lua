@@ -1,4 +1,3 @@
-local ts_utils = require('nvim-treesitter.ts_utils')
 local utils = require("nvim-biscuits.utils")
 local html = require("nvim-biscuits.languages.html")
 
